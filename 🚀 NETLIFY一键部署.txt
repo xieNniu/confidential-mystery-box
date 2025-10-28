@@ -1,0 +1,168 @@
+═══════════════════════════════════════════════════════════════
+  🚀 Netlify 超简单部署指南（5分钟搞定！）
+═══════════════════════════════════════════════════════════════
+
+
+📋 你有2个选择：
+
+┌─────────────────────────────────────────────────────────────┐
+│  方式1：拖拽部署（最快！推荐新手！）                       │
+└─────────────────────────────────────────────────────────────┘
+
+第1步：构建项目
+  ✅ 双击运行：build_for_netlify.bat
+  ✅ 等待构建完成（约1-2分钟）
+  ✅ 会自动打开 frontend\dist 文件夹
+
+第2步：上传到Netlify
+  ✅ 打开浏览器访问：https://app.netlify.com/drop
+  ✅ 把 frontend\dist 文件夹拖进去
+  ✅ 等待上传（几秒钟）
+  ✅ 完成！获得你的URL！
+
+🎉 就这么简单！
+
+
+┌─────────────────────────────────────────────────────────────┐
+│  方式2：GitHub自动部署（推荐！一劳永逸！）                  │
+└─────────────────────────────────────────────────────────────┘
+
+第1步：登录Netlify
+  ✅ 访问：https://app.netlify.com/
+  ✅ 用GitHub账号登录
+
+第2步：导入项目
+  ✅ 点击 "Add new site" → "Import an existing project"
+  ✅ 选择 "Deploy with GitHub"
+  ✅ 选择仓库：confidential-mystery-box
+
+第3步：配置构建设置
+  ✅ Base directory: frontend
+  ✅ Build command: npm run build
+  ✅ Publish directory: frontend/dist
+
+第4步：添加环境变量
+  ✅ 点击 "Show advanced"
+  ✅ 点击 "New variable"
+  ✅ 复制粘贴以下内容（一个一个添加）：
+
+  Key: VITE_SEPOLIA_RPC_URL
+  Value: https://eth-sepolia.public.blastapi.io
+
+  Key: VITE_GATEWAY_URL
+  Value: https://gateway.zama.ai
+
+  Key: VITE_RELAYER_URL
+  Value: https://relayer.zama.ai
+
+  Key: VITE_ACL_CONTRACT_ADDRESS
+  Value: 0xFBEcEaBC38264de2Dbb00e63a1E7566704b42610
+
+  Key: VITE_KMS_CONTRACT_ADDRESS
+  Value: 0x90b5eB5f2f2D6874B8Df3a95C6a32CBab66AD37b
+
+  Key: VITE_CONTRACT_ADDRESS_SIMPLE
+  Value: 0x6ca2bff6ea43e2c847A1
+
+  Key: VITE_CONTRACT_ADDRESS_FHE
+  Value: 0x9180E8620B0C726E68f937
+
+第5步：部署
+  ✅ 点击 "Deploy site"
+  ✅ 等待2-3分钟
+  ✅ 完成！
+
+🎉 以后只要推送代码到GitHub，就会自动部署！
+
+
+═══════════════════════════════════════════════════════════════
+  📁 项目中的部署文件说明
+═══════════════════════════════════════════════════════════════
+
+✅ netlify.toml
+   → Netlify自动配置文件（已包含所有设置）
+
+✅ build_for_netlify.bat
+   → 一键构建脚本（双击运行）
+
+✅ NETLIFY_DEPLOY_GUIDE.md
+   → 详细部署指南（问题排查、高级配置）
+
+✅ NETLIFY_ENV_VARIABLES.md
+   → 环境变量配置清单（完整列表）
+
+✅ frontend/_redirects
+   → SPA路由重定向规则（自动生效）
+
+
+═══════════════════════════════════════════════════════════════
+  ⚡ 快速命令（如果你喜欢命令行）
+═══════════════════════════════════════════════════════════════
+
+# 进入前端目录
+cd frontend
+
+# 安装依赖
+npm install
+
+# 构建生产版本
+npm run build
+
+# 预览构建结果
+npm run preview
+
+
+═══════════════════════════════════════════════════════════════
+  ✅ 部署成功后测试清单
+═══════════════════════════════════════════════════════════════
+
+□ 页面能正常加载
+□ 能连接MetaMask钱包
+□ 能看到Mystery Box列表
+□ 能切换到Sepolia网络
+□ 能购买Mystery Box
+□ 能打开Mystery Box
+□ 能提取奖品
+
+
+═══════════════════════════════════════════════════════════════
+  🐛 遇到问题？
+═══════════════════════════════════════════════════════════════
+
+问题1：页面空白
+  → 检查浏览器控制台（F12）
+  → 查看Netlify部署日志
+  → 确认环境变量已设置
+
+问题2：无法连接钱包
+  → 确保使用HTTPS（Netlify自动提供）
+  → 检查MetaMask是否安装
+  → 刷新页面重试
+
+问题3：合约调用失败
+  → 确认切换到Sepolia测试网
+  → 检查钱包有测试ETH
+  → 确认合约地址正确
+
+
+═══════════════════════════════════════════════════════════════
+  📚 详细文档
+═══════════════════════════════════════════════════════════════
+
+→ 完整部署指南：NETLIFY_DEPLOY_GUIDE.md
+→ 环境变量配置：NETLIFY_ENV_VARIABLES.md
+→ 项目说明：README.md
+→ 用户指南：USER_GUIDE.md
+
+
+═══════════════════════════════════════════════════════════════
+  🎊 恭喜！
+═══════════════════════════════════════════════════════════════
+
+你的Confidential Mystery Box即将部署到全球CDN！
+任何人都可以通过你的URL访问你的应用！
+
+记得把部署URL更新到README.md中！
+
+Good Luck! 🍀
+
