@@ -9,7 +9,7 @@
 
 *A decentralized mystery box system with fully encrypted prizes using Zama's Fully Homomorphic Encryption (FHE) technology*
 
-[Demo](https://mystery-box-zama.netlify.app/) • [Video]([features](https://youtu.be/pE8uU6Sf56k)) • [Quick Start](https://mystery-box-zama.netlify.app/) • [Documentation](#documentation)
+[Demo](https://mystery-box-zama.netlify.app/) • [Video]((https://youtu.be/pE8uU6Sf56k)) • [Quick Start](https://mystery-box-zama.netlify.app/) • [Documentation](#documentation)
 
 </div>
 
