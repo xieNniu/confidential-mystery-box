@@ -1,4 +1,5 @@
 # 🎰 Confidential Mystery Box
+<img width="2560" height="1279" alt="image" src="https://github.com/user-attachments/assets/97a9f8a2-dfcb-42fe-be13-cfa73a8f0c1b" />
 
 <div align="center">
 
@@ -8,7 +9,7 @@
 
 *A decentralized mystery box system with fully encrypted prizes using Zama's Fully Homomorphic Encryption (FHE) technology*
 
-[Demo](#demo) • [Features](#features) • [Quick Start](#quick-start) • [Documentation](#documentation)
+[Demo](#[demo](https://mystery-box-zama.netlify.app/)) • [Features](#features) • [Quick Start](#quick-start) • [Documentation](#documentation)
 
 </div>
 
