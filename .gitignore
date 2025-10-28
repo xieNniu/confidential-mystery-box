@@ -1,0 +1,78 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+
+# Build outputs
+artifacts/
+cache/
+typechain-types/
+frontend/dist/
+frontend/build/
+
+# Environment variables (IMPORTANT: Never commit these!)
+.env
+.env.local
+.env.production
+
+# Deployment records (may contain sensitive addresses)
+deployment_fhe.json
+deployment_simple.json
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Hardhat
+cache/
+artifacts/
+
+# TypeScript
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+
+# Project specific
+start_frontend.bat
+项目完成报告.md
+frontend/主题切换说明.md
+frontend/布局方案说明.md
+scripts/get_wallet_info.js
+scripts/deploy_with_key.js
+DEPLOYMENT_SUCCESS.md

@@ -1,0 +1,178 @@
+/* 📄 方案 3: 简约商务风格 */
+
+:root {
+  --minimal-primary: #2563eb;
+  --minimal-secondary: #64748b;
+  --minimal-success: #10b981;
+  --minimal-danger: #ef4444;
+  --minimal-bg: #ffffff;
+  --minimal-surface: #f8fafc;
+  --minimal-border: #e2e8f0;
+  --minimal-text: #1e293b;
+  --minimal-text-secondary: #64748b;
+}
+
+body.theme-minimal {
+  background-color: #f8fafc;
+  color: var(--minimal-text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+.theme-minimal .minimal-card {
+  background: white;
+  border: 1px solid var(--minimal-border);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.theme-minimal .minimal-card:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.theme-minimal .minimal-button {
+  background: var(--minimal-primary);
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.theme-minimal .minimal-button:hover {
+  background: #1d4ed8;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.theme-minimal .minimal-button-outline {
+  background: transparent;
+  color: var(--minimal-primary);
+  border: 1.5px solid var(--minimal-primary);
+}
+
+.theme-minimal .minimal-button-outline:hover {
+  background: var(--minimal-primary);
+  color: white;
+}
+
+.theme-minimal .minimal-button-secondary {
+  background: var(--minimal-secondary);
+}
+
+.theme-minimal .minimal-button-secondary:hover {
+  background: #475569;
+}
+
+.theme-minimal .minimal-button-success {
+  background: var(--minimal-success);
+}
+
+.theme-minimal .minimal-button-success:hover {
+  background: #059669;
+}
+
+.theme-minimal .minimal-header {
+  background: white;
+  border-bottom: 1px solid var(--minimal-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.theme-minimal .minimal-input {
+  background: white;
+  border: 1.5px solid var(--minimal-border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  color: var(--minimal-text);
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.theme-minimal .minimal-input:focus {
+  outline: none;
+  border-color: var(--minimal-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.theme-minimal .minimal-badge {
+  background: #eff6ff;
+  color: var(--minimal-primary);
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.theme-minimal .minimal-badge-success {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.theme-minimal .minimal-badge-danger {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.theme-minimal .minimal-divider {
+  height: 1px;
+  background: var(--minimal-border);
+  margin: 24px 0;
+}
+
+.theme-minimal .minimal-title {
+  color: var(--minimal-text);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.theme-minimal .minimal-subtitle {
+  color: var(--minimal-text-secondary);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+/* 加载动画 */
+.theme-minimal .minimal-spinner {
+  border: 3px solid var(--minimal-border);
+  border-top: 3px solid var(--minimal-primary);
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 工具提示 */
+.theme-minimal .minimal-tooltip {
+  position: relative;
+}
+
+.theme-minimal .minimal-tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 12px;
+  background: var(--minimal-text);
+  color: white;
+  font-size: 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.theme-minimal .minimal-tooltip:hover::after {
+  opacity: 1;
+}
+
+
