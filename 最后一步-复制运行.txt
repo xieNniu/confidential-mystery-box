@@ -1,0 +1,124 @@
+========================================
+  最后一步：上传到GitHub（超简单！）
+========================================
+
+我已经帮你完成了：
+✅ 检查安全（没有敏感信息）
+✅ 添加所有文件
+✅ 提交到本地Git
+✅ 设置分支名称为main
+
+========================================
+你需要做的只有3个步骤：
+========================================
+
+【第1步】在GitHub创建空仓库（2分钟）
+--------------------------------------
+1. 打开浏览器，访问：https://github.com/new
+
+2. 填写：
+   Repository name: confidential-mystery-box
+   
+3. ⚠️ 重要：不要勾选任何选项！
+   - 不要勾选 "Add a README"
+   - 不要勾选 "Add .gitignore"  
+   - 不要勾选 "Choose a license"
+
+4. 点击绿色按钮 "Create repository"
+
+5. 创建后会看到一个页面，先别关！
+
+
+【第2步】准备你的GitHub信息
+--------------------------------------
+准备这两个信息（一会要用）：
+
+A. 你的GitHub用户名（不是邮箱！）
+   在这里查看：https://github.com/ （右上角头像，点开看username）
+   
+B. Personal Access Token（如果还没有，现在创建）
+   1) 访问：https://github.com/settings/tokens
+   2) 点 "Generate new token (classic)"
+   3) Note填: My Project
+   4) 勾选: repo
+   5) 点最下面 "Generate token"
+   6) 复制token（ghp_开头的一长串）到记事本
+
+
+【第3步】运行推送命令（1分钟）
+--------------------------------------
+打开 CMD（按 Win+R，输入cmd，回车）
+
+然后依次输入这3条命令：
+
+命令1：进入项目目录
+cd /d E:\ZAMAcode\T05
+
+命令2：连接GitHub（把YOUR_USERNAME替换成你的用户名！）
+git remote add origin https://github.com/YOUR_USERNAME/confidential-mystery-box.git
+
+命令3：推送到GitHub
+git push -u origin main
+
+这时会弹窗要求输入凭据：
+- Username: 输入你的GitHub用户名
+- Password: 粘贴刚才的Token（不是密码！）
+
+等待几秒...看到 "done" 就成功了！
+
+
+【完成！】
+--------------------------------------
+访问你的项目：
+https://github.com/你的用户名/confidential-mystery-box
+
+🎉 恭喜！你的项目已经上传到GitHub了！
+
+
+========================================
+命令示例（假设你的用户名是 alice）：
+========================================
+
+cd /d E:\ZAMAcode\T05
+git remote add origin https://github.com/alice/confidential-mystery-box.git
+git push -u origin main
+
+（输入用户名: alice）
+（输入密码: 粘贴你的token）
+
+
+========================================
+出错了？常见问题：
+========================================
+
+问题1：显示 "remote origin already exists"
+解决：先运行 git remote remove origin
+      然后重新运行 git remote add origin ...
+
+问题2：显示 "repository not found"  
+解决：检查GitHub仓库是否已创建
+      检查用户名拼写是否正确
+
+问题3：显示 "permission denied"
+解决：检查Token是否正确复制（完整的）
+      确保Token有repo权限
+
+问题4：要求输入密码但什么都没显示
+解决：这是正常的！粘贴Token后直接按回车
+      （为了安全，不会显示你输入的内容）
+
+
+========================================
+需要帮助？
+========================================
+
+如果还是不会，可以：
+1. 截图错误信息给我看
+2. 或者运行 upload_to_github.bat（双击它）
+   它会一步步引导你
+
+
+========================================
+祝你成功！🚀
+========================================
+
