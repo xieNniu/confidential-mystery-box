@@ -12,7 +12,7 @@ interface ArcadeLayoutFullProps {
 export function ArcadeLayoutFull({ onTabChange, isOwner }: ArcadeLayoutFullProps) {
   const { address, isConnected, connectWallet, balance, isCorrectNetwork, switchNetwork } = useWallet();
   const { contractType, gatewayStatus } = useContract();
-  const { series, loading, purchaseBox, openBox, refreshSeries } = useMysteryBox();
+  const { series, loading, purchaseBox, refreshSeries } = useMysteryBox();
   
   const [spinning, setSpinning] = useState<number | null>(null);
   const [dropped, setDropped] = useState<number | null>(null);
@@ -68,9 +68,9 @@ export function ArcadeLayoutFull({ onTabChange, isOwner }: ArcadeLayoutFullProps
           <span style={styles.statusDivider}>|</span>
           <span style={{
             ...styles.gatewayStatus,
-            color: gatewayStatus === 'online' ? '#22c55e' : '#ef4444',
+            color: gatewayStatus === 'up' ? '#22c55e' : '#ef4444',
           }}>
-            {gatewayStatus === 'online' ? '🟢 Gateway Online' : '🔴 Gateway Offline'}
+            {gatewayStatus === 'up' ? '🟢 Gateway Online' : '🔴 Gateway Offline'}
           </span>
           <span style={styles.statusDivider}>|</span>
           <span style={styles.mode}>

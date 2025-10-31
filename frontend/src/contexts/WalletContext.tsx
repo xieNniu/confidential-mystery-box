@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import * as React from 'react';
 import { ethers } from 'ethers';
 import { NETWORK_CONFIG } from '../config/constants';
 import { WalletState } from '../types';
@@ -11,10 +11,10 @@ interface WalletContextType extends WalletState {
   getSigner: () => Promise<ethers.Signer | null>;
 }
 
-const WalletContext = createContext<WalletContextType | undefined>(undefined);
+const WalletContext = React.createContext<WalletContextType | undefined>(undefined);
 
-export function WalletProvider({ children }: { children: ReactNode }) {
-  const [walletState, setWalletState] = useState<WalletState>({
+export function WalletProvider({ children }: { children: React.ReactNode }) {
+  const [walletState, setWalletState] = React.useState<WalletState>({
     address: null,
     balance: '0',
     isConnected: false,
@@ -169,10 +169,11 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   /**
    * Listen for account and network changes
    */
-  useEffect(() => {
+  React.useEffect(() => {
     if (typeof window.ethereum === 'undefined') return;
 
-    const handleAccountsChanged = (accounts: string[]) => {
+    const handleAccountsChanged = (...args: unknown[]) => {
+      const accounts = args[0] as string[];
       if (accounts.length === 0) {
         disconnectWallet();
       } else if (accounts[0] !== walletState.address) {
@@ -184,11 +185,13 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       window.location.reload();
     };
 
-    window.ethereum.on('accountsChanged', handleAccountsChanged);
-    window.ethereum.on('chainChanged', handleChainChanged);
+    if (typeof window.ethereum !== 'undefined') {
+      window.ethereum.on('accountsChanged', handleAccountsChanged);
+      window.ethereum.on('chainChanged', handleChainChanged);
+    }
 
     return () => {
-      if (window.ethereum.removeListener) {
+      if (typeof window.ethereum !== 'undefined' && window.ethereum.removeListener) {
         window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
         window.ethereum.removeListener('chainChanged', handleChainChanged);
       }
@@ -198,7 +201,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   /**
    * Auto-connect if previously connected
    */
-  useEffect(() => {
+  React.useEffect(() => {
     const autoConnect = async () => {
       if (typeof window.ethereum === 'undefined') return;
       
@@ -235,7 +238,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
 }
 
 export function useWallet() {
-  const context = useContext(WalletContext);
+  const context = React.useContext(WalletContext);
   if (context === undefined) {
     throw new Error('useWallet must be used within a WalletProvider');
   }

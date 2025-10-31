@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import * as React from 'react';
 import { ContractType, GatewayStatus } from '../types';
 import { FHEVM_CONFIG, GATEWAY_CHECK_INTERVAL } from '../config/constants';
 
@@ -11,12 +11,12 @@ interface ContractContextType {
   checkGatewayHealth: () => Promise<boolean>;
 }
 
-const ContractContext = createContext<ContractContextType | undefined>(undefined);
+const ContractContext = React.createContext<ContractContextType | undefined>(undefined);
 
-export function ContractProvider({ children }: { children: ReactNode }) {
-  const [contractType, setContractTypeState] = useState<ContractType>('simple');
-  const [gatewayStatus, setGatewayStatus] = useState<GatewayStatus>('checking');
-  const [isAutoMode, setIsAutoMode] = useState<boolean>(true);
+export function ContractProvider({ children }: { children: React.ReactNode }) {
+  const [contractType, setContractTypeState] = React.useState<ContractType>('simple');
+  const [gatewayStatus, setGatewayStatus] = React.useState<GatewayStatus>('checking');
+  const [isAutoMode, setIsAutoMode] = React.useState<boolean>(true);
 
   /**
    * Check Gateway health
@@ -83,7 +83,7 @@ export function ContractProvider({ children }: { children: ReactNode }) {
   /**
    * Initialize and poll Gateway status
    */
-  useEffect(() => {
+  React.useEffect(() => {
     const pollGateway = async () => {
       setGatewayStatus('checking');
       
@@ -133,7 +133,7 @@ export function ContractProvider({ children }: { children: ReactNode }) {
 }
 
 export function useContract() {
-  const context = useContext(ContractContext);
+  const context = React.useContext(ContractContext);
   if (context === undefined) {
     throw new Error('useContract must be used within a ContractProvider');
   }

@@ -4,6 +4,7 @@ import { useContractInteraction } from './useContract';
 import { encryptNumber } from '../utils/fhevm';
 import { formatEth, parseEth, generatePrizePool, getRandomPrizeAmount, waitForTransaction } from '../utils/helpers';
 import { BoxSeries, UserBox } from '../types';
+import RelayerClient from '../utils/relayerClient';
 
 export function useMysteryBox() {
   const { getContractInstance, getContractAddress, contractType, userAddress } =
@@ -62,18 +63,21 @@ export function useMysteryBox() {
         const info = await contract.getBoxInfo(boxId);
         
         if (contractType === 'fhe') {
-          // FHE mode
+          // FHE mode - new format with status enum
+          // Returns: boxId, seriesId, boxOwner, status, revealedPrizeAmount, purchaseTime, expiresAt
+          const status = Number(info[3]); // BoxStatus enum: 0=PURCHASED, 1=PENDING_DECRYPT, 2=DECRYPTING, 3=OPENED, 4=PRIZE_WITHDRAWN, 5=EXPIRED
+          
           boxes.push({
             boxId: Number(info[0]),
             seriesId: Number(info[1]),
             owner: info[2],
-            isOpened: info[3],
-            isDecrypting: info[4],
-            revealedPrizeAmount: info[5] ? formatEth(info[5]) : undefined,
-            purchaseTime: Number(info[6]),
+            isOpened: status === 3 || status === 4, // OPENED or PRIZE_WITHDRAWN
+            isDecrypting: status === 1 || status === 2, // PENDING_DECRYPT or DECRYPTING
+            revealedPrizeAmount: info[4] ? formatEth(info[4]) : undefined,
+            purchaseTime: Number(info[5]),
           });
         } else {
-          // Simple mode
+          // Simple mode - old format (still compatible)
           boxes.push({
             boxId: Number(info[0]),
             seriesId: Number(info[1]),
@@ -183,21 +187,112 @@ export function useMysteryBox() {
   );
 
   /**
-   * Open box
+   * Open box - Complete decryption flow (5 steps)
+   * Follows FHEVM Development Standards Section 3.4
    */
   const openBox = useCallback(
-    async (boxId: number): Promise<void> => {
+    async (
+      boxId: number,
+      onProgress?: (progress: number, message: string) => void
+    ): Promise<void> => {
       setLoading(true);
       setError(null);
 
       try {
         const contract = await getContractInstance();
-        const tx = await contract.openBox(boxId);
-        await waitForTransaction(tx);
+        const contractAddress = getContractAddress();
 
         if (contractType === 'fhe') {
-          console.log('✅ 开盒请求已发送，等待 Gateway 解密...');
+          // ===== Step 1: Submit on-chain decryption request =====
+          if (onProgress) onProgress(10, 'Submitting decryption request...');
+          console.log('🎮 开始解密盲盒:', boxId);
+          
+          const tx = await contract.openBox(boxId);
+          console.log('📝 交易已提交:', tx.hash);
+          
+          if (onProgress) onProgress(20, 'Waiting for transaction confirmation...');
+          const receipt = await waitForTransaction(tx);
+          console.log('✅ 交易已确认');
+
+          // ===== Step 2: Get requestId from event =====
+          if (onProgress) onProgress(30, 'Extracting request ID from event...');
+          
+          const event = receipt.logs.find((log: any) => {
+            try {
+              const parsed = contract.interface.parseLog({
+                topics: log.topics || [],
+                data: log.data || '',
+              });
+              return parsed && (parsed.name === 'DecryptionRequested' || parsed.name === 'BoxOpenRequested');
+            } catch {
+              return false;
+            }
+          });
+
+          if (!event) {
+            throw new Error('未找到 DecryptionRequested 事件');
+          }
+
+          const parsedEvent = contract.interface.parseLog({
+            topics: event.topics || [],
+            data: event.data || '',
+          });
+
+          const requestId = parsedEvent?.args?.requestId || parsedEvent?.args?.[2];
+          if (!requestId) {
+            throw new Error('未找到 requestId');
+          }
+
+          console.log('🔑 解密请求ID:', requestId.toString());
+
+          // ===== Step 3: Poll Gateway (关键步骤) =====
+          if (onProgress) onProgress(40, 'Polling Gateway for decryption...');
+          console.log('⏳ 开始轮询 Gateway...');
+
+          const relayerClient = new RelayerClient('sepolia');
+          const pollResult = await relayerClient.pollDecryption(
+            requestId,
+            contractAddress,
+            {
+              onProgress: (pollProgress) => {
+                const percentage = 40 + (pollProgress.percentage * 0.3);
+                if (onProgress) {
+                  onProgress(
+                    Math.round(percentage),
+                    `Polling Gateway... ${pollProgress.percentage}% (${pollProgress.current}/${pollProgress.total})`
+                  );
+                }
+              },
+            }
+          );
+
+          if (!pollResult.success) {
+            throw new Error(pollResult.error || 'Gateway decryption timeout');
+          }
+
+          console.log('✅ Gateway 解密完成');
+
+          // ===== Step 4: Wait for on-chain callback completion =====
+          if (onProgress) onProgress(85, 'Waiting for on-chain callback...');
+          console.log('⏳ 等待链上回调...');
+
+          await waitForCallbackCompletion(boxId, contract, (waitProgress) => {
+            const percentage = 85 + (waitProgress * 0.1);
+            if (onProgress) {
+              onProgress(Math.round(percentage), 'Waiting for callback...');
+            }
+          });
+
+          // ===== Step 5: Get final result =====
+          if (onProgress) onProgress(95, 'Getting final result...');
+          const boxInfo = await contract.getBoxInfo(boxId);
+          console.log('🎉 解密流程完成!', boxInfo);
+
+          if (onProgress) onProgress(100, 'Decryption completed!');
         } else {
+          // Simple mode - direct open
+          const tx = await contract.openBox(boxId);
+          await waitForTransaction(tx);
           console.log('✅ 盲盒已开启');
         }
       } catch (err: any) {
@@ -208,8 +303,39 @@ export function useMysteryBox() {
         setLoading(false);
       }
     },
-    [getContractInstance, contractType]
+    [getContractInstance, contractType, getContractAddress]
   );
+
+  /**
+   * Wait for on-chain callback completion
+   */
+  const waitForCallbackCompletion = async (
+    boxId: number,
+    contract: ethers.Contract,
+    onProgress: (progress: number) => void
+  ): Promise<void> => {
+    const MAX_WAIT = 120; // 2分钟
+    const INTERVAL = 2000; // 2秒
+
+    for (let i = 0; i < MAX_WAIT; i++) {
+      onProgress(i / MAX_WAIT);
+
+      try {
+        const boxInfo = await contract.getBoxInfo(boxId);
+        // status: 3 = OPENED (BoxStatus enum)
+        if (boxInfo[3] === 3) {
+          console.log('✅ 回调已在链上完成');
+          return;
+        }
+      } catch (error) {
+        console.warn('⏳ 等待回调中...', error);
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, INTERVAL));
+    }
+
+    throw new Error('等待回调超时 - 请检查合约状态或重试');
+  };
 
   /**
    * Withdraw prize

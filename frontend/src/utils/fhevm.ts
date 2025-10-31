@@ -16,7 +16,7 @@ export async function initFhevmInstance(): Promise<any> {
     
     fhevmInstance = await createInstance({
       chainId: FHEVM_CONFIG.chainId,
-      networkUrl: FHEVM_CONFIG.networkUrl,
+      network: FHEVM_CONFIG.networkUrl,
       gatewayUrl: FHEVM_CONFIG.gatewayUrl,
       aclAddress: FHEVM_CONFIG.aclContractAddress,
     });

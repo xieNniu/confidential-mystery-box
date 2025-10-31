@@ -6,7 +6,6 @@ import nodePolyfills from 'rollup-plugin-polyfill-node'
 export default defineConfig({
   plugins: [
     react(),
-    nodePolyfills(),
   ],
   define: {
     global: 'globalThis',
@@ -41,6 +40,9 @@ export default defineConfig({
     target: 'es2020',
     commonjsOptions: {
       transformMixedEsModules: true,
+    },
+    rollupOptions: {
+      plugins: [nodePolyfills()],
     },
   },
   server: {

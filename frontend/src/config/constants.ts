@@ -1,6 +1,6 @@
 // Contract addresses (update after deployment)
 export const CONTRACT_ADDRESS_SIMPLE = "0x6ca2b8Ba1219A75C75599d8298bb3EeC95b147A1";
-export const CONTRACT_ADDRESS_FHE = "0x9180e6daA167D2Df27e7eA0f2895cE5F583bf937";
+export const CONTRACT_ADDRESS_FHE = "0x0F5866bE68a853720Fc05617547a5bBb722A7E19"; // ✅ Updated after fixes
 
 // Network configuration
 export const NETWORK_CONFIG = {

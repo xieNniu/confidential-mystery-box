@@ -67,7 +67,7 @@ Our solution uses **Fully Homomorphic Encryption (FHE)** to:
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/confidential-mystery-box.git
+git clone https://github.com/xieNniu/confidential-mystery-box.git
 cd confidential-mystery-box
 ```
 
@@ -109,8 +109,8 @@ npx hardhat run scripts/deploy_fhe.js --network sepolia
 
 Edit `frontend/src/config/constants.ts` with your deployed contract addresses:
 ```typescript
-export const CONTRACT_ADDRESS_SIMPLE = "0xYourSimpleContractAddress";
-export const CONTRACT_ADDRESS_FHE = "0xYourFHEContractAddress";
+export const CONTRACT_ADDRESS_SIMPLE = "0x6ca2b8Ba1219A75C75599d8298bb3EeC95b147A1";
+export const CONTRACT_ADDRESS_FHE = "0x0F5866bE68a853720Fc05617547a5bBb722A7E19";
 ```
 
 7. **Start frontend**
@@ -303,7 +303,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Zama Developer Program**: [https://www.zama.ai/programs/developer-program](https://www.zama.ai/programs/developer-program)
 - **FHEVM Documentation**: [https://docs.zama.ai/fhevm](https://docs.zama.ai/fhevm)
 - **Zama Status**: [https://status.zama.ai/](https://status.zama.ai/)
-- **Project Issues**: [GitHub Issues](https://github.com/yourusername/confidential-mystery-box/issues)
+- **Project Issues**: [GitHub Issues](https://github.com/xieNniu/confidential-mystery-box/issues)
+- **GitHub Repository**: [https://github.com/xieNniu/confidential-mystery-box](https://github.com/xieNniu/confidential-mystery-box)
 
 ---
 
@@ -319,6 +320,6 @@ The FHE technology and Gateway service are still in development. Performance and
 
 **Made with ❤️ for the Zama Developer Program**
 
-[![Star this repo](https://img.shields.io/github/stars/yourusername/confidential-mystery-box?style=social)](https://github.com/yourusername/confidential-mystery-box)
+[![Star this repo](https://img.shields.io/github/stars/xieNniu/confidential-mystery-box?style=social)](https://github.com/xieNniu/confidential-mystery-box)
 
 </div>

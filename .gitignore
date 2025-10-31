@@ -71,8 +71,24 @@ Desktop.ini
 # Project specific
 start_frontend.bat
 项目完成报告.md
+修复完成报告.md
+修复总结和下一步.md
+项目标准自查报告.md
+部署成功报告.md
+Netlify部署说明.md
+快速部署说明.txt
+🚀 NETLIFY一键部署.txt
 frontend/主题切换说明.md
 frontend/布局方案说明.md
 scripts/get_wallet_info.js
 scripts/deploy_with_key.js
 DEPLOYMENT_SUCCESS.md
+
+# Temporary deployment scripts with hardcoded keys
+scripts/deploy_fhe_temp.js
+scripts/deploy_fhe_standalone.js
+
+# Temporary test components (already deleted, but keep in gitignore)
+# frontend/src/App-simple.tsx
+# frontend/src/App-test.tsx
+# frontend/src/App-with-providers.tsx

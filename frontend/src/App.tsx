@@ -15,7 +15,6 @@ type Tab = 'store' | 'myboxes' | 'admin';
 function AppContent() {
   const [activeTab, setActiveTab] = useState<Tab>('store');
   const [isOwner, setIsOwner] = useState<boolean>(false);
-  const [checkingOwner, setCheckingOwner] = useState<boolean>(true);
   const { address, isConnected } = useWallet();
   const { getContractOwner } = useMysteryBox();
 
@@ -24,12 +23,10 @@ function AppContent() {
     const checkOwner = async () => {
       if (!isConnected || !address) {
         setIsOwner(false);
-        setCheckingOwner(false);
         return;
       }
 
       try {
-        setCheckingOwner(true);
         const ownerAddress = await getContractOwner();
         setIsOwner(address.toLowerCase() === ownerAddress);
         console.log('👤 Permission check:', { 
@@ -40,8 +37,6 @@ function AppContent() {
       } catch (error) {
         console.error('Failed to check owner:', error);
         setIsOwner(false);
-      } finally {
-        setCheckingOwner(false);
       }
     };
 

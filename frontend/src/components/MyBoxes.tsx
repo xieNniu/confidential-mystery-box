@@ -32,22 +32,43 @@ export function MyBoxes() {
     }
   };
 
+  const [decryptionProgress, setDecryptionProgress] = useState<{
+    boxId: number;
+    progress: number;
+    message: string;
+  } | null>(null);
+
   const handleOpenBox = async (boxId: number) => {
     try {
       setActioningId(boxId);
-      await openBox(boxId);
       
       if (contractType === 'fhe') {
-        alert('Open box request sent! Waiting for Gateway decryption (about 5-15 seconds)...');
-        // Poll for updates
-        setTimeout(() => loadBoxes(), 5000);
-        setTimeout(() => loadBoxes(), 10000);
-        setTimeout(() => loadBoxes(), 15000);
+        // FHE mode - show progress
+        setDecryptionProgress({
+          boxId,
+          progress: 0,
+          message: 'Starting decryption...',
+        });
+
+        await openBox(boxId, (progress, message) => {
+          setDecryptionProgress({
+            boxId,
+            progress,
+            message,
+          });
+        });
+
+        setDecryptionProgress(null);
+        alert('🎉 Box opened successfully! Prize revealed.');
       } else {
+        // Simple mode - direct open
+        await openBox(boxId);
         alert(UI_TEXT.openSuccess);
-        await loadBoxes();
       }
+      
+      await loadBoxes();
     } catch (error: any) {
+      setDecryptionProgress(null);
       alert(UI_TEXT.errorTransaction + ': ' + error.message);
     } finally {
       setActioningId(null);
@@ -152,6 +173,23 @@ export function MyBoxes() {
                         ? UI_TEXT.decrypting
                         : UI_TEXT.openBox}
                     </button>
+
+                    {/* Decryption Progress */}
+                    {decryptionProgress && decryptionProgress.boxId === box.boxId && (
+                      <div style={styles.progressContainer}>
+                        <div style={styles.progressBar}>
+                          <div
+                            style={{
+                              ...styles.progressFill,
+                              width: `${decryptionProgress.progress}%`,
+                            }}
+                          />
+                        </div>
+                        <div style={styles.progressText}>
+                          {decryptionProgress.message} ({decryptionProgress.progress}%)
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
@@ -384,6 +422,30 @@ const styles: Record<string, React.CSSProperties> = {
     color: '#d1fae5',
     fontSize: '0.875rem',
     fontWeight: '500',
+  },
+  progressContainer: {
+    marginTop: '1rem',
+    padding: '0.75rem',
+    backgroundColor: '#374151',
+    borderRadius: '0.5rem',
+  },
+  progressBar: {
+    width: '100%',
+    height: '0.5rem',
+    backgroundColor: '#1f2937',
+    borderRadius: '0.25rem',
+    overflow: 'hidden',
+    marginBottom: '0.5rem',
+  },
+  progressFill: {
+    height: '100%',
+    backgroundColor: '#3b82f6',
+    transition: 'width 0.3s ease',
+  },
+  progressText: {
+    color: '#9ca3af',
+    fontSize: '0.75rem',
+    textAlign: 'center',
   },
 };
 

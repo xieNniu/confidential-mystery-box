@@ -223,12 +223,20 @@ export function ProjectInfo({ isOpen, onClose, isOwner }: ProjectInfoProps) {
 
           {/* Contact */}
           <section style={styles.section}>
-            <h3 style={styles.sectionTitle}>📬 Contact Us</h3>
+            <h3 style={styles.sectionTitle}>📬 Contact & Links</h3>
             <div style={styles.contact}>
               <p style={styles.text}>
                 Welcome to participate in the Zama Developer Program and build the future of confidential computing together!
               </p>
               <div style={styles.links}>
+                <a 
+                  href="https://github.com/xieNniu/confidential-mystery-box" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style={styles.link}
+                >
+                  ⭐ GitHub Repository
+                </a>
                 <a 
                   href="https://www.zama.ai/programs/developer-program" 
                   target="_blank" 
